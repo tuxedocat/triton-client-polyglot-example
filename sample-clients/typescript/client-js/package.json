@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "fetchProto": "mkdir -p ./proto && git clone https://github.com/triton-inference-server/common -b r22.02 ./upstream && mv ./upstream/protobuf/*.proto ./proto/",
+    "clean": "rm -rf ./upstream ./generated ./generated_static",
+    "generateStaticLib": "mkdir -p ./generated_static && grpc_tools_node_protoc -I ./proto --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --js_out=import_style=commonjs,binary:./generated_static --grpc_out=grpc_js:./generated_static --ts_out=service=grpc-node,mode=grpc-js:./generated_static ./proto/*.proto",
+    "generate": "proto-loader-gen-types --longs=String --enums=String --defaults --oneofs --keepCase --grpcLib=@grpc/grpc-js --outDir=./generated proto/*.proto",
+    "install": "yarn clean && yarn fetchProto && yarn generate"
+  },
+  "name": "triton-grpc-client",
+  "version": "22.02",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.5.7",
+    "google-protobuf": "^3.20.0-rc.1",
+    "grpc-tools": "^1.11.2",
+    "ts-protoc-gen": "^0.15.0"
+  }
+}
