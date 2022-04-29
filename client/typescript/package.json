@@ -1,0 +1,53 @@
+{
+  "name": "triton-grpc-client",
+  "version": "22.02.0-alpha.0",
+  "license": "MIT",
+  "files": [
+    "dist/*"
+  ],
+  "private": true,
+  "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "fetchProto": "mkdir -p ./proto && git clone https://github.com/triton-inference-server/common -b r22.02 ./upstream && mv ./upstream/protobuf/*.proto ./proto/",
+    "clean": "rm -rf ./dist ./proto ./upstream ./generated ./generated_static ./src/generated ./src/proto",
+    "generateStaticLib": "mkdir -p ./generated_static && $(npm bin)/grpc_tools_node_protoc -I ./proto --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --js_out=import_style=commonjs,binary:./generated_static --grpc_out=grpc_js:./generated_static --ts_out=service=grpc-node,mode=grpc-js:./generated_static ./proto/*.proto",
+    "generateTypes": "$(npm bin)/proto-loader-gen-types --longs=String --enums=String --defaults --oneofs --keepCase --grpcLib=@grpc/grpc-js --outDir=./generated proto/*.proto",
+    "mkDest": "mkdir -p src/proto src/generated",
+    "copyProto": "cp -r ./proto/* src/proto/",
+    "copyGeneratedCode": "cp -r ./generated/* src/generated/",
+    "generate": "yarn clean && yarn fetchProto && yarn generateTypes && yarn mkDest && yarn copyProto && yarn copyGeneratedCode",
+    "build": "rm -rf ./dist && tsc --build && cp -r src/proto dist/",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx}\" --write \"test/**/*.{js,ts,tsx}\"",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.6.2",
+    "@grpc/proto-loader": "^0.6.9"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0",
+    "@types/sharp": "*",
+    "c8": "^7.11.0",
+    "got": "*",
+    "grpc-tools": "^1.11.0",
+    "prettier": "*",
+    "ts-node": "*",
+    "ts-protoc-gen": "*",
+    "typescript": "4.3",
+    "vitest": "*"
+  },
+  "optionalDependencies": {
+    "mathjs": "^10.4.0",
+    "sharp": "^0.27.1"
+  },
+  "volta": {
+    "node": "14.19.1",
+    "yarn": "1.22.18"
+  }
+}

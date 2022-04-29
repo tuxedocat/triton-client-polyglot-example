@@ -1,0 +1,9 @@
+build/
+dist/
+coverage/
+./proto/
+node_modules/
+./generated/
+./generated_static/
+./upstream/
+*.log
