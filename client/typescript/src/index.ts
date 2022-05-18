@@ -1,13 +1,16 @@
 import { promisify } from 'util'
-import { loadPackageDefinition, credentials, ChannelCredentials } from '@grpc/grpc-js'
+import { loadPackageDefinition, credentials, ChannelCredentials, ClientOptions, CallOptions } from '@grpc/grpc-js'
 import { loadSync } from '@grpc/proto-loader'
 import { ProtoGrpcType } from './generated/grpc_service'
 import {
+  ModelInferRequest,
+  _inference_ModelInferRequest_InferInputTensor as InferInputTensor,
+} from './generated/inference/ModelInferRequest'
+import {
   ModelInferResponse,
-  _inference_ModelInferResponse_InferOutputTensor,
+  _inference_ModelInferResponse_InferOutputTensor as InferOutputTensor,
 } from './generated/inference/ModelInferResponse'
 import { GRPCInferenceServiceClient } from './generated/inference/GRPCInferenceService'
-import { ModelInferRequest } from './generated/inference/ModelInferRequest'
 import { ServerLiveRequest } from './generated/inference/ServerLiveRequest'
 import { ServerLiveResponse } from './generated/inference/ServerLiveResponse'
 import { ServerReadyResponse } from './generated/inference/ServerReadyResponse'
@@ -42,12 +45,12 @@ export const triton = loadedPackageDefinition.inference
  * */
 export class TritonCoreAPI {
   private client: GRPCInferenceServiceClient
-  constructor(endpoint: string, creds?: ChannelCredentials) {
-    this.client = new triton.GRPCInferenceService(endpoint, creds ?? credentials.createInsecure())
+  constructor(endpoint: string, creds?: ChannelCredentials, clientOptions?: ClientOptions) {
+    this.client = new triton.GRPCInferenceService(endpoint, creds ?? credentials.createInsecure(), clientOptions)
   }
   public async serverReady(req: ServerReadyRequest): Promise<ServerReadyResponse> {
     return promisify<ServerReadyRequest>(this.client.serverReady.bind(this.client))(
-      req,
+      req
     ) as unknown as ServerReadyResponse
   }
   public async serverLive(req: ServerLiveRequest): Promise<ServerLiveResponse> {
@@ -58,21 +61,24 @@ export class TritonCoreAPI {
   }
   public async modelConfig(req: ModelConfigRequest): Promise<ModelConfigResponse> {
     return promisify<ModelConfigRequest>(this.client.modelConfig.bind(this.client))(
-      req,
+      req
     ) as unknown as ModelConfigResponse
   }
   public async modelMetadata(req: ModelMetadataRequest): Promise<ModelMetadataResponse> {
     return promisify<ModelMetadataRequest>(this.client.modelMetadata.bind(this.client))(
-      req,
+      req
     ) as unknown as ModelMetadataResponse
   }
   public async modelStatistics(req: ModelStatisticsRequest): Promise<ModelStatisticsResponse> {
     return promisify<ModelStatisticsRequest>(this.client.modelStatistics.bind(this.client))(
-      req,
+      req
     ) as unknown as ModelStatisticsResponse
   }
-  public async modelInfer(req: ModelInferRequest): Promise<ModelInferResponse> {
-    return promisify<ModelInferRequest>(this.client.modelInfer.bind(this.client))(req) as unknown as ModelInferResponse
+  public async modelInfer(req: ModelInferRequest, opts?: CallOptions): Promise<ModelInferResponse> {
+    return promisify<ModelInferRequest, CallOptions>(this.client.modelInfer.bind(this.client))(
+      req,
+      opts ?? {}
+    ) as unknown as ModelInferResponse
   }
 }
 
@@ -97,4 +103,6 @@ export type {
   credentials,
   ChannelCredentials,
   InferTensorContents,
+  InferInputTensor,
+  InferOutputTensor,
 }
