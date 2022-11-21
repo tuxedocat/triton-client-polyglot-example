@@ -25,10 +25,12 @@ export interface ModelWarmup {
   name?: string
   batch_size?: number
   inputs?: { [key: string]: _inference_ModelWarmup_Input }
+  count?: number
 }
 
 export interface ModelWarmup__Output {
   name: string
   batch_size: number
   inputs: { [key: string]: _inference_ModelWarmup_Input__Output }
+  count: number
 }

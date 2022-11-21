@@ -9,6 +9,8 @@ export enum _inference_BatchInput_Kind {
   BATCH_ACCUMULATED_ELEMENT_COUNT = 1,
   BATCH_ACCUMULATED_ELEMENT_COUNT_WITH_ZERO = 2,
   BATCH_MAX_ELEMENT_COUNT_AS_SHAPE = 3,
+  BATCH_ITEM_SHAPE = 4,
+  BATCH_ITEM_SHAPE_FLATTEN = 5,
 }
 
 export interface BatchInput {

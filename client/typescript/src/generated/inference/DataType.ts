@@ -15,4 +15,5 @@ export enum DataType {
   TYPE_FP32 = 11,
   TYPE_FP64 = 12,
   TYPE_STRING = 13,
+  TYPE_BF16 = 14,
 }

@@ -27,6 +27,14 @@ import type {
   CudaSharedMemoryUnregisterResponse__Output as _inference_CudaSharedMemoryUnregisterResponse__Output,
 } from '../inference/CudaSharedMemoryUnregisterResponse'
 import type {
+  LogSettingsRequest as _inference_LogSettingsRequest,
+  LogSettingsRequest__Output as _inference_LogSettingsRequest__Output,
+} from '../inference/LogSettingsRequest'
+import type {
+  LogSettingsResponse as _inference_LogSettingsResponse,
+  LogSettingsResponse__Output as _inference_LogSettingsResponse__Output,
+} from '../inference/LogSettingsResponse'
+import type {
   ModelConfigRequest as _inference_ModelConfigRequest,
   ModelConfigRequest__Output as _inference_ModelConfigRequest__Output,
 } from '../inference/ModelConfigRequest'
@@ -273,6 +281,47 @@ export interface GRPCInferenceServiceClient extends grpc.Client {
   cudaSharedMemoryUnregister(
     argument: _inference_CudaSharedMemoryUnregisterRequest,
     callback: grpc.requestCallback<_inference_CudaSharedMemoryUnregisterResponse__Output>,
+  ): grpc.ClientUnaryCall
+
+  LogSettings(
+    argument: _inference_LogSettingsRequest,
+    metadata: grpc.Metadata,
+    options: grpc.CallOptions,
+    callback: grpc.requestCallback<_inference_LogSettingsResponse__Output>,
+  ): grpc.ClientUnaryCall
+  LogSettings(
+    argument: _inference_LogSettingsRequest,
+    metadata: grpc.Metadata,
+    callback: grpc.requestCallback<_inference_LogSettingsResponse__Output>,
+  ): grpc.ClientUnaryCall
+  LogSettings(
+    argument: _inference_LogSettingsRequest,
+    options: grpc.CallOptions,
+    callback: grpc.requestCallback<_inference_LogSettingsResponse__Output>,
+  ): grpc.ClientUnaryCall
+  LogSettings(
+    argument: _inference_LogSettingsRequest,
+    callback: grpc.requestCallback<_inference_LogSettingsResponse__Output>,
+  ): grpc.ClientUnaryCall
+  logSettings(
+    argument: _inference_LogSettingsRequest,
+    metadata: grpc.Metadata,
+    options: grpc.CallOptions,
+    callback: grpc.requestCallback<_inference_LogSettingsResponse__Output>,
+  ): grpc.ClientUnaryCall
+  logSettings(
+    argument: _inference_LogSettingsRequest,
+    metadata: grpc.Metadata,
+    callback: grpc.requestCallback<_inference_LogSettingsResponse__Output>,
+  ): grpc.ClientUnaryCall
+  logSettings(
+    argument: _inference_LogSettingsRequest,
+    options: grpc.CallOptions,
+    callback: grpc.requestCallback<_inference_LogSettingsResponse__Output>,
+  ): grpc.ClientUnaryCall
+  logSettings(
+    argument: _inference_LogSettingsRequest,
+    callback: grpc.requestCallback<_inference_LogSettingsResponse__Output>,
   ): grpc.ClientUnaryCall
 
   ModelConfig(
@@ -922,6 +971,8 @@ export interface GRPCInferenceServiceHandlers extends grpc.UntypedServiceImpleme
     _inference_CudaSharedMemoryUnregisterResponse
   >
 
+  LogSettings: grpc.handleUnaryCall<_inference_LogSettingsRequest__Output, _inference_LogSettingsResponse>
+
   ModelConfig: grpc.handleUnaryCall<_inference_ModelConfigRequest__Output, _inference_ModelConfigResponse>
 
   ModelInfer: grpc.handleUnaryCall<_inference_ModelInferRequest__Output, _inference_ModelInferResponse>
@@ -991,6 +1042,12 @@ export interface GRPCInferenceServiceDefinition extends grpc.ServiceDefinition {
     _inference_CudaSharedMemoryUnregisterResponse,
     _inference_CudaSharedMemoryUnregisterRequest__Output,
     _inference_CudaSharedMemoryUnregisterResponse__Output
+  >
+  LogSettings: MethodDefinition<
+    _inference_LogSettingsRequest,
+    _inference_LogSettingsResponse,
+    _inference_LogSettingsRequest__Output,
+    _inference_LogSettingsResponse__Output
   >
   ModelConfig: MethodDefinition<
     _inference_ModelConfigRequest,

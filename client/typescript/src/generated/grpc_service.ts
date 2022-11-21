@@ -28,6 +28,8 @@ export interface ProtoGrpcType {
     InferParameter: MessageTypeDefinition
     InferStatistics: MessageTypeDefinition
     InferTensorContents: MessageTypeDefinition
+    LogSettingsRequest: MessageTypeDefinition
+    LogSettingsResponse: MessageTypeDefinition
     ModelConfig: MessageTypeDefinition
     ModelConfigRequest: MessageTypeDefinition
     ModelConfigResponse: MessageTypeDefinition

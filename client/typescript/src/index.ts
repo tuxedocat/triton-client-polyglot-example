@@ -50,7 +50,7 @@ export class TritonCoreAPI {
   }
   public async serverReady(req: ServerReadyRequest): Promise<ServerReadyResponse> {
     return promisify<ServerReadyRequest>(this.client.serverReady.bind(this.client))(
-      req
+      req,
     ) as unknown as ServerReadyResponse
   }
   public async serverLive(req: ServerLiveRequest): Promise<ServerLiveResponse> {
@@ -61,23 +61,23 @@ export class TritonCoreAPI {
   }
   public async modelConfig(req: ModelConfigRequest): Promise<ModelConfigResponse> {
     return promisify<ModelConfigRequest>(this.client.modelConfig.bind(this.client))(
-      req
+      req,
     ) as unknown as ModelConfigResponse
   }
   public async modelMetadata(req: ModelMetadataRequest): Promise<ModelMetadataResponse> {
     return promisify<ModelMetadataRequest>(this.client.modelMetadata.bind(this.client))(
-      req
+      req,
     ) as unknown as ModelMetadataResponse
   }
   public async modelStatistics(req: ModelStatisticsRequest): Promise<ModelStatisticsResponse> {
     return promisify<ModelStatisticsRequest>(this.client.modelStatistics.bind(this.client))(
-      req
+      req,
     ) as unknown as ModelStatisticsResponse
   }
   public async modelInfer(req: ModelInferRequest, opts?: CallOptions): Promise<ModelInferResponse> {
     return promisify<ModelInferRequest, CallOptions>(this.client.modelInfer.bind(this.client))(
       req,
-      opts ?? {}
+      opts ?? {},
     ) as unknown as ModelInferResponse
   }
 }

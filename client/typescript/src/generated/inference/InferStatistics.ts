@@ -13,6 +13,7 @@ export interface InferStatistics {
   compute_infer?: _inference_StatisticDuration | null
   compute_output?: _inference_StatisticDuration | null
   cache_hit?: _inference_StatisticDuration | null
+  cache_miss?: _inference_StatisticDuration | null
 }
 
 export interface InferStatistics__Output {
@@ -23,4 +24,5 @@ export interface InferStatistics__Output {
   compute_infer: _inference_StatisticDuration__Output | null
   compute_output: _inference_StatisticDuration__Output | null
   cache_hit: _inference_StatisticDuration__Output | null
+  cache_miss: _inference_StatisticDuration__Output | null
 }
