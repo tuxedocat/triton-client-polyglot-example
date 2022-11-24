@@ -1,0 +1,85 @@
+name: "clip"
+platform: "ensemble"
+max_batch_size: 8
+# Dynamic batching scheduler is not available for ensemble models
+# dynamic_batching { }
+
+input [
+  {
+    # Base64 encoded image
+    name: "BASE64IMAGE"
+    data_type: TYPE_STRING
+    dims: [ 1 ]
+  },
+  {
+    # UTF-8 encoded text
+    name: "TEXT"
+    data_type: TYPE_STRING
+    dims: [ 1 ]
+  }
+]
+output [
+  {
+    name: "IMAGE_EMB"
+    data_type: TYPE_FP32
+    dims: [ 512 ]
+  },
+  {
+    name: "TEXT_EMB"
+    data_type: TYPE_FP32
+    dims: [ 512 ]
+  }
+]
+
+ensemble_scheduling {
+  step [
+    {
+      model_name: "clip-preprocess"
+      model_version: -1
+      input_map {
+        key: "BASE64IMAGE"
+        value: "BASE64IMAGE"
+      }
+      input_map {
+        key: "TEXT"
+        value: "TEXT"
+      }
+      output_map {
+        key: "IMAGE_NCHW"
+        value: "image"
+      }
+      output_map {
+        key: "SUBWORD_IDS"
+        value: "subword_ids"
+      }
+      output_map {
+        key: "ATTENTION_MASK"
+        value: "attention_mask"
+      }
+    },
+    {
+      model_name: "clip-core"
+      model_version: -1
+      input_map {
+        key: "pixel_values"
+        value: "image"
+      }
+      input_map {
+        key: "input_ids"
+        value: "subword_ids"
+      }
+      input_map {
+        key: "attention_mask"
+        value: "attention_mask"
+      }
+      output_map {
+        key: "text_embeds"
+        value: "TEXT_EMB"
+      }
+      output_map {
+        key: "image_embeds"
+        value: "IMAGE_EMB"
+      }
+    }
+  ]
+}

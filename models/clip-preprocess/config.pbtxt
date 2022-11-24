@@ -1,0 +1,74 @@
+name: "clip-preprocess"
+backend: "python"
+max_batch_size: 8
+
+dynamic_batching {
+  max_queue_delay_microseconds: 50000
+  default_queue_policy {
+    timeout_action: DELAY
+    allow_timeout_override: true
+    default_timeout_microseconds: 5000000
+  }
+}
+
+input [
+  {
+    # Base64 encoded PNG image
+    name: "BASE64IMAGE"
+    data_type: TYPE_STRING
+    dims: [ 1 ]
+  },
+  {
+    name: "TEXT"
+    data_type: TYPE_STRING
+    dims: [ 1 ]
+  }
+]
+
+output [
+  {
+    name: "IMAGE_NCHW"
+    data_type: TYPE_FP32
+    dims: [ 3, -1, -1 ]
+  },
+  {
+    name: "SUBWORD_IDS"
+    data_type: TYPE_INT64
+    dims: [ -1 ]
+  },
+  {
+    name: "ATTENTION_MASK"
+    data_type: TYPE_INT64
+    dims: [ -1 ]
+  }
+]
+
+# model_warmup [
+#   {
+#     name: "preproc-warmup"
+#     batch_size: 4
+#     inputs {
+#       key: "BASE64IMAGE"
+#       value: {
+#         data_type: TYPE_STRING
+#         dims: [ 1 ]
+#         input_data_file: "base64png"
+#       }
+#     }
+#     inputs {
+#       key: "TEXT"
+#       value: {
+#         data_type: TYPE_STRING
+#         dims: [ 1 ]
+#         input_data_file: "utf8text"
+#       }
+#     }
+#   }
+# ]
+
+instance_group [
+  {
+    count: 1
+    kind: KIND_CPU
+  }
+]

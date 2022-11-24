@@ -7,7 +7,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-tritonclient = {extras = ["all"], version = "^2.20.0"}
+tritonclient = {extras = ["all"], version = "^2.27.0"}
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.942"
