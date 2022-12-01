@@ -3,10 +3,14 @@ backend: "onnxruntime"
 platform: "onnxruntime_onnx"
 default_model_filename: "clip-vit-base-patch32.onnx"
 
-max_batch_size: 8
+max_batch_size: 128
+# 自動batch化を有効にする
+# このとき各入力・出力の次元は batch_size の次元が増える
+# オプションはドキュメントを参照のこと
 dynamic_batching {
-  # pack requests into a batch within 100ms window
+  # 例: 100ms 単位で自動バッチ化する場合
   max_queue_delay_microseconds: 100000
+  # 例: タイムアウト時にリクエストを破棄する場合
   default_queue_policy {
     timeout_action: REJECT
     allow_timeout_override: true
@@ -22,11 +26,15 @@ input [
   {
     name: "pixel_values"
     data_type: TYPE_FP32
-    dims: [ 3, -1, -1 ]
+    # ONNX側は float32[batch,num_channels,height,width] のように可変次元のTensorに対応している
+    # ここではRGB画像に限定している
+    dims: [ 3, -1, -1 ] 
   },
   {
     name: "input_ids"
     data_type: TYPE_INT64
+    # このCLIP text encoderは77 tokenまでだが
+    # ONNXモデルの入力自体は可変長となっている
     dims: [ -1 ]
   },
   {
@@ -52,6 +60,7 @@ output [
 instance_group [
   {
     count: 1
+    # GPUが使用可能なときはGPUを利用する
     kind: KIND_AUTO
   }
 ]

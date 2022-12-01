@@ -1,0 +1,4 @@
+.dvc/
+.git/
+.venv/
+node_modules/
