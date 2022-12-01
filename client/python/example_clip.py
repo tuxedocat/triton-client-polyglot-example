@@ -7,8 +7,7 @@ from io import BytesIO
 import base64
 import typer
 import logging
-from typing import Tuple, List, Optional
-from pathlib import Path
+from typing import Tuple
 from PIL import Image
 
 logging.basicConfig(level=logging.INFO)
@@ -52,9 +51,10 @@ def get_clip_embs(
         txt_emb = response.as_numpy("TEXT_EMB")
         img_emb = response.as_numpy("IMAGE_EMB")
     logger.info(f"Shape: {txt_emb.shape, img_emb.shape}")
-    logger.info(
-        f"Cosine Similarity: {np.dot(txt_emb[0], img_emb[0])/(np.linalg.norm(txt_emb[0])*np.linalg.norm(img_emb[0]))}"
+    cossim = np.dot(txt_emb[0], img_emb[0]) / (
+        np.linalg.norm(txt_emb[0]) * np.linalg.norm(img_emb[0])
     )
+    logger.info(f"Cosine Similarity: {cossim}")
     return txt_emb, img_emb
 
 
